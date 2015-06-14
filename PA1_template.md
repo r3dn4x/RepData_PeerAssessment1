@@ -1,16 +1,12 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
 
 1. Load the data.
 
-```{r}
+
+```r
         if(!file.exists("data")){
                 dir.create("data")
                 }
@@ -27,7 +23,8 @@ output:
 
 2. Process the file.
 
-```{r}
+
+```r
         # Format the date
         library(lubridate)
         activity_data$date <- ymd(activity_data$date)
@@ -38,14 +35,16 @@ output:
 
 1. Calculate the total number of steps taken per day.
 
-```{r}
+
+```r
         s <- aggregate(list(steps = activity_data$steps), by = list(date = activity_data$date), sum)
         s$steps <- as.numeric(s$steps)
 ```
 
 2. Make a histogram of the total number of steps take per day.
 
-```{r}
+
+```r
         library(ggplot2)
 
         #Divide sum by 1K to conver to kilo steps
@@ -58,24 +57,31 @@ output:
                 scale_y_continuous(limits = c(0,7), breaks = seq(1,7,2)) +
                 scale_x_continuous(limits = c(0,22), breaks = seq(0,22,2)) +
                 theme(legend.position = "none")
+```
 
 ```
+## stat_bin: binwidth defaulted to range/30. Use 'binwidth = x' to adjust this.
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
 3. Calculate and report the mean and median of the total number of steps taken per day.
 
-```{r}
+
+```r
         mean_steps <- mean(s$steps, na.rm = TRUE)
         median_steps <- median(s$steps, na.rm = TRUE) 
 ```
 
-The mean number of steps is `r mean_steps` and median is `r median_steps`.
+The mean number of steps is 1.0766189\times 10^{4} and median is 1.0765\times 10^{4}.
 
 
 ## What is the average daily activity pattern?
 
 1. Time series plot of the 5-minute interval and the average number of steps taken, averaged across all days.
 
-```{r}
+
+```r
         #Find the average number of steps per each 5 minute interval
         avg_steps <- aggregate(list(steps = activity_data$steps),
                                by = list(interval = activity_data$interval),
@@ -88,9 +94,12 @@ The mean number of steps is `r mean_steps` and median is `r median_steps`.
              y = "Mean number of steps")
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+
 2. 5-minute interval, on average across all the days in the dataset, with the maximum number of steps.
 
-```{r}
+
+```r
         # Convert the 5 min interval into a factor first.
         avg_steps$interval <- as.factor(avg_steps$interval)
 
@@ -98,13 +107,23 @@ The mean number of steps is `r mean_steps` and median is `r median_steps`.
         sorted[1,1]
 ```
 
+```
+## [1] 835
+## 288 Levels: 0 5 10 15 20 25 30 35 40 45 50 55 100 105 110 115 120 ... 2355
+```
+
 
 ## Imputing missing values
 
 1. Total number of missing values in the dataset.
 
-```{r}
+
+```r
         sum(is.na(activity_data$steps))
+```
+
+```
+## [1] 2304
 ```
 
 2. Devise a strategy for filling in all of the missing values in the dataset.
@@ -113,7 +132,8 @@ Replace missing values with the mean number of steps for that same interval acro
 
 3. New dataset with imputed data
 
-```{r}
+
+```r
         imp_act <- activity_data
         
         #Find indices for missing values
@@ -121,12 +141,12 @@ Replace missing values with the mean number of steps for that same interval acro
 
         #Replace the missing values
         imp_act$steps[missing] = rep(avg_steps$steps, 288)[missing]
-
 ```
 
 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-```{r}
+
+```r
         s2 <- aggregate(list(steps = imp_act$steps), by = list(date = imp_act$date), sum)
         s2$steps <- as.numeric(s2$steps)
 
@@ -140,19 +160,28 @@ Replace missing values with the mean number of steps for that same interval acro
                 scale_y_continuous(limits = c(0,7), breaks = seq(1,7,2)) +
                 scale_x_continuous(limits = c(0,22), breaks = seq(0,22,2)) +
                 theme(legend.position = "none")
+```
 
+```
+## stat_bin: binwidth defaulted to range/30. Use 'binwidth = x' to adjust this.
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
+
+```r
         mean_steps2 <- mean(s2$steps, na.rm = TRUE)
         median_steps2 <- median(s2$steps, na.rm = TRUE) 
 ```
 
-The mean number of steps per day using this imputed data is `r mean_steps2` and the median is `r median_steps2`. These are exactly the same as the values calculated ignoring the missing data (mean = `r mean_steps`, median = `r median_steps`).
+The mean number of steps per day using this imputed data is 1.0766189\times 10^{4} and the median is 1.0766189\times 10^{4}. These are exactly the same as the values calculated ignoring the missing data (mean = 1.0766189\times 10^{4}, median = 1.0765\times 10^{4}).
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
-```{r}
+
+```r
         # Make a vector of weekdays
         weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 
@@ -166,7 +195,8 @@ The mean number of steps per day using this imputed data is `r mean_steps2` and 
 
 2. Panel plot containing a time series plot of the 5-minute interval and the average number of steps taken, averaged across all weekday days or weekend days.
 
-```{r}
+
+```r
         #Find the average number of steps per each 5 minute interval
         avg_steps2 <- aggregate(list(steps = days_act$steps),
                                by = list(interval = days_act$interval,
@@ -179,6 +209,8 @@ The mean number of steps per day using this imputed data is `r mean_steps2` and 
         labs(title = "Daily activity pattern by day type", x = "Time interval (5 min)",
              y = "Mean number of steps")
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
 
 The early morning peak activity starts a bit later on weekends and doesn't peak as high as on weekdays. There is also more activity during the midday hours and this doesn't taper off until later at night on weekends compared to weekdays.
 
