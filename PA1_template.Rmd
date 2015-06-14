@@ -8,26 +8,27 @@ output:
 
 ## Loading and preprocessing the data
 
-Download the file using the link provided.
+1. Load the data.
 
 ```{r}
         if(!file.exists("data")){
                 dir.create("data")
                 }
-        
+
+        # Download the file
         Url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
         
         download.file(Url, destfile = "data/activity.zip", method = "curl")
         unzip("data/activity.zip", exdir = "data")
         
+        # Read the file
         activity_data <- read.csv("data/activity.csv", header = TRUE)
-
 ```
 
-Format the date.
+2. Process the file.
 
 ```{r}
-
+        # Format the date
         library(lubridate)
         activity_data$date <- ymd(activity_data$date)
 ```
@@ -35,16 +36,67 @@ Format the date.
 
 ## What is mean total number of steps taken per day?
 
+1. Calculate the total number of steps taken per day.
+
 ```{r}
-        s <- aggregate(activity_data$steps, by = list(activity_data$date), sum)
-        mean(s[,2], na.rm = TRUE)
+        s <- aggregate(list(steps = activity_data$steps), by = list(date = activity_data$date), sum)
+        s$steps <- as.numeric(s$steps)
 ```
+
+2. Make a histogram of the total number of steps take per day.
+
+```{r}
+        library(ggplot2)
+
+        #Divide sum by 1K to conver to kilo steps
+        s$ksum <- s$steps/1000
+
+        g <- ggplot(s, aes(s$ksum, fill = "red"))
+        g + geom_histogram() +
+                 labs(title = "Total number of steps per day", 
+             y = "Frequency", x = "Total steps x 10^3") +
+                scale_y_continuous(limits = c(0,7), breaks = seq(1,7,2)) +
+                scale_x_continuous(limits = c(0,22), breaks = seq(0,22,2)) +
+                theme(legend.position = "none")
+
+```
+
+3. Mean number of total steps per day is 
+```{r}
+        mean(s$steps, na.rm = TRUE)
+```
+
+Median number of total steps per day is
+```{r}
+        median(s$steps, na.rm = TRUE) 
+```
+
 
 
 ## What is the average daily activity pattern?
 
-```{r}
+1. Time series plot of the 5-minute interval and the average number of steps taken, averaged across all days.
 
+```{r}
+        #Find the average number of steps per each 5 minute interval
+        avg_steps <- aggregate(list(steps = activity_data$steps),
+                               by = list(interval = activity_data$interval),
+                               mean, na.rm = TRUE)
+
+        avg_steps$interval <- as.factor(avg_steps$interval)
+
+        #Plot this as a time series
+        g <- ggplot(avg_steps, aes(interval, steps)) +
+        geom_line() +
+        labs(title = "Daily activity pattern", x = "Time interval (5 min)",
+             y = "Mean number of steps")
+```
+
+2. 5-minute interval, on average across all the days in the dataset, with the maximum number of steps.
+
+```{r}
+        sorted <- avg_steps[order(-avg_steps$steps),]
+        sorted[1,1]
 ```
 
 
