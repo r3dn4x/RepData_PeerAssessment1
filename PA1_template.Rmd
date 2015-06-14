@@ -8,7 +8,7 @@ output:
 
 ## Loading and preprocessing the data
 
-1. Load the data.
+#### 1. Load the data.
 
 ```{r}
         if(!file.exists("data")){
@@ -25,7 +25,7 @@ output:
         activity_data <- read.csv("data/activity.csv", header = TRUE)
 ```
 
-2. Process the file.
+#### 2. Process the file.
 
 ```{r}
         # Format the date
@@ -36,14 +36,14 @@ output:
 
 ## What is mean total number of steps taken per day?
 
-1. Calculate the total number of steps taken per day.
+#### 1. Calculate the total number of steps taken per day.
 
 ```{r}
         s <- aggregate(list(steps = activity_data$steps), by = list(date = activity_data$date), sum)
         s$steps <- as.numeric(s$steps)
 ```
 
-2. Make a histogram of the total number of steps take per day.
+#### 2. Make a histogram of the total number of steps take per day.
 
 ```{r}
         library(ggplot2)
@@ -61,7 +61,7 @@ output:
 
 ```
 
-3. Calculate and report the mean and median of the total number of steps taken per day.
+#### 3. Calculate and report the mean and median of the total number of steps taken per day.
 
 ```{r}
         mean_steps <- mean(s$steps, na.rm = TRUE)
@@ -73,7 +73,7 @@ The mean number of steps is `r mean_steps` and median is `r median_steps`.
 
 ## What is the average daily activity pattern?
 
-1. Time series plot of the 5-minute interval and the average number of steps taken, averaged across all days.
+#### 1. Time series plot of the 5-minute interval and the average number of steps taken, averaged across all days.
 
 ```{r}
         #Find the average number of steps per each 5 minute interval
@@ -88,7 +88,7 @@ The mean number of steps is `r mean_steps` and median is `r median_steps`.
              y = "Mean number of steps")
 ```
 
-2. 5-minute interval, on average across all the days in the dataset, with the maximum number of steps.
+#### 2. 5-minute interval, on average across all the days in the dataset, with the maximum number of steps.
 
 ```{r}
         # Convert the 5 min interval into a factor first.
@@ -101,17 +101,17 @@ The mean number of steps is `r mean_steps` and median is `r median_steps`.
 
 ## Imputing missing values
 
-1. Total number of missing values in the dataset.
+#### 1. Total number of missing values in the dataset.
 
 ```{r}
         sum(is.na(activity_data$steps))
 ```
 
-2. Devise a strategy for filling in all of the missing values in the dataset.
+#### 2. Devise a strategy for filling in all of the missing values in the dataset.
 
 Replace missing values with the mean number of steps for that same interval across all days.
 
-3. New dataset with imputed data
+#### 3. New dataset with imputed data
 
 ```{r}
         imp_act <- activity_data
@@ -124,7 +124,7 @@ Replace missing values with the mean number of steps for that same interval acro
 
 ```
 
-4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+#### 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 ```{r}
         s2 <- aggregate(list(steps = imp_act$steps), by = list(date = imp_act$date), sum)
@@ -150,7 +150,7 @@ The mean number of steps per day using this imputed data is `r mean_steps2` and 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+#### 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
 ```{r}
         # Make a vector of weekdays
@@ -164,7 +164,7 @@ The mean number of steps per day using this imputed data is `r mean_steps2` and 
         days_act$day <- ifelse(weekdays(imp_act$date) %in% weekdays, "weekday", "weekend")
 ```
 
-2. Panel plot containing a time series plot of the 5-minute interval and the average number of steps taken, averaged across all weekday days or weekend days.
+#### 2. Panel plot containing a time series plot of the 5-minute interval and the average number of steps taken, averaged across all weekday days or weekend days.
 
 ```{r}
         #Find the average number of steps per each 5 minute interval
@@ -180,7 +180,13 @@ The mean number of steps per day using this imputed data is `r mean_steps2` and 
              y = "Mean number of steps")
 ```
 
-The early morning peak activity starts a bit later on weekends and doesn't peak as high as on weekdays. There is also more activity during the midday hours and this doesn't taper off until later at night on weekends compared to weekdays.
+The early morning peak activity starts a bit later on weekends and doesn't peak as high as on weekdays. There is also more activity during the midday hours and this doesn't taper off until later at night on weekends compared to weekdays.  
+
+
+
+
+
+
 
 
 

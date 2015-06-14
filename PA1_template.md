@@ -3,7 +3,7 @@
 
 ## Loading and preprocessing the data
 
-1. Load the data.
+#### 1. Load the data.
 
 
 ```r
@@ -21,7 +21,7 @@
         activity_data <- read.csv("data/activity.csv", header = TRUE)
 ```
 
-2. Process the file.
+#### 2. Process the file.
 
 
 ```r
@@ -33,7 +33,7 @@
 
 ## What is mean total number of steps taken per day?
 
-1. Calculate the total number of steps taken per day.
+#### 1. Calculate the total number of steps taken per day.
 
 
 ```r
@@ -41,7 +41,7 @@
         s$steps <- as.numeric(s$steps)
 ```
 
-2. Make a histogram of the total number of steps take per day.
+#### 2. Make a histogram of the total number of steps take per day.
 
 
 ```r
@@ -65,7 +65,7 @@
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
-3. Calculate and report the mean and median of the total number of steps taken per day.
+#### 3. Calculate and report the mean and median of the total number of steps taken per day.
 
 
 ```r
@@ -78,7 +78,7 @@ The mean number of steps is 1.0766189\times 10^{4} and median is 1.0765\times 10
 
 ## What is the average daily activity pattern?
 
-1. Time series plot of the 5-minute interval and the average number of steps taken, averaged across all days.
+#### 1. Time series plot of the 5-minute interval and the average number of steps taken, averaged across all days.
 
 
 ```r
@@ -96,7 +96,7 @@ The mean number of steps is 1.0766189\times 10^{4} and median is 1.0765\times 10
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
 
-2. 5-minute interval, on average across all the days in the dataset, with the maximum number of steps.
+#### 2. 5-minute interval, on average across all the days in the dataset, with the maximum number of steps.
 
 
 ```r
@@ -115,7 +115,7 @@ The mean number of steps is 1.0766189\times 10^{4} and median is 1.0765\times 10
 
 ## Imputing missing values
 
-1. Total number of missing values in the dataset.
+#### 1. Total number of missing values in the dataset.
 
 
 ```r
@@ -126,11 +126,11 @@ The mean number of steps is 1.0766189\times 10^{4} and median is 1.0765\times 10
 ## [1] 2304
 ```
 
-2. Devise a strategy for filling in all of the missing values in the dataset.
+#### 2. Devise a strategy for filling in all of the missing values in the dataset.
 
 Replace missing values with the mean number of steps for that same interval across all days.
 
-3. New dataset with imputed data
+#### 3. New dataset with imputed data
 
 
 ```r
@@ -143,7 +143,7 @@ Replace missing values with the mean number of steps for that same interval acro
         imp_act$steps[missing] = rep(avg_steps$steps, 288)[missing]
 ```
 
-4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+#### 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 
 ```r
@@ -178,7 +178,7 @@ The mean number of steps per day using this imputed data is 1.0766189\times 10^{
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+#### 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
 
 ```r
@@ -193,7 +193,7 @@ The mean number of steps per day using this imputed data is 1.0766189\times 10^{
         days_act$day <- ifelse(weekdays(imp_act$date) %in% weekdays, "weekday", "weekend")
 ```
 
-2. Panel plot containing a time series plot of the 5-minute interval and the average number of steps taken, averaged across all weekday days or weekend days.
+#### 2. Panel plot containing a time series plot of the 5-minute interval and the average number of steps taken, averaged across all weekday days or weekend days.
 
 
 ```r
@@ -212,7 +212,13 @@ The mean number of steps per day using this imputed data is 1.0766189\times 10^{
 
 ![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
 
-The early morning peak activity starts a bit later on weekends and doesn't peak as high as on weekdays. There is also more activity during the midday hours and this doesn't taper off until later at night on weekends compared to weekdays.
+The early morning peak activity starts a bit later on weekends and doesn't peak as high as on weekdays. There is also more activity during the midday hours and this doesn't taper off until later at night on weekends compared to weekdays.  
+
+
+
+
+
+
 
 
 
