@@ -8,14 +8,44 @@ output:
 
 ## Loading and preprocessing the data
 
+Download the file using the link provided.
+
+```{r}
+        if(!file.exists("data")){
+                dir.create("data")
+                }
+        
+        Url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+        
+        download.file(Url, destfile = "data/activity.zip", method = "curl")
+        unzip("data/activity.zip", exdir = "data")
+        
+        activity_data <- read.csv("data/activity.csv", header = TRUE)
+
+```
+
+Format the date.
+
+```{r}
+
+        library(lubridate)
+        activity_data$date <- ymd(activity_data$date)
+```
 
 
 ## What is mean total number of steps taken per day?
 
+```{r}
+        s <- aggregate(activity_data$steps, by = list(activity_data$date), sum)
+        mean(s[,2], na.rm = TRUE)
+```
 
 
 ## What is the average daily activity pattern?
 
+```{r}
+
+```
 
 
 ## Imputing missing values
